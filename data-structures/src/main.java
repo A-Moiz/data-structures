@@ -257,6 +257,7 @@ public class main {
             System.out.print("Select the index of the item you want to remove: ");
             try {
                 index = main.input.nextInt();
+                main.input.nextLine();
                 if (index >= 0 && index < array.length) {
                     validIndex = true;
                 } else {
@@ -264,6 +265,7 @@ public class main {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid index.");
+                main.input.next();
             }
         }
         return index;
