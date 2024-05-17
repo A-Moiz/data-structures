@@ -1,6 +1,7 @@
 package src;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -14,6 +15,11 @@ public class main {
     static int arrayLength = 10;
     static String[] array = new String[arrayLength];
 
+    // Array list
+    private static String arrayListCSVFile = "arrayList_content.csv";
+    private static  String arrayListTextFile = "arrayList_content.txt";
+    static ArrayList<String> arrayList = new ArrayList<>();
+
     public static void main(String[] args) {
         mainMenu();
     }
@@ -23,6 +29,8 @@ public class main {
         System.out.println("Please choose one of the following options:");
         System.out.println("----------");
         System.out.println("1: Array");
+        System.out.println("----------");
+        System.out.println("2: Array List");
         System.out.println("----------");
         System.out.println("6: Exit");
         System.out.println("----------");
@@ -38,6 +46,9 @@ public class main {
                     case 1:
                         arrayMenu();
                         break;
+                    case 2:
+                        arrayListMenu();
+                        break;
                     case 6:
                         System.exit(0);
                         break;
@@ -49,6 +60,111 @@ public class main {
         }
     }
 
+    // ArrayList
+    private static void arrayListMenu() {
+        int num = -1;
+        while (num < 0) {
+            arrayListOptions();
+            try {
+                int choice = Integer.valueOf(input.nextLine());
+                switch (choice) {
+                    case 1:
+                        addToArrayList();
+                        break;
+                    case 2:
+                        viewArrayList();
+                        break;
+                    case 3:
+                        deleteFromArrayList();
+                        break;
+                    case 6:
+                        num = 0;
+                        break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid option entered");
+                num = -1;
+            }
+        }
+    }
+
+    private static void arrayListOptions() {
+        System.out.println("--------------------------------------------------");
+        System.out.println("Please choose one of the following options:");
+        System.out.println("--------------------");
+        System.out.println("1: Add to ArrayList (String)");
+        System.out.println("--------------------");
+        System.out.println("2: View ArrayList (String)");
+        System.out.println("--------------------");
+        System.out.println("3: Delete from ArrayList (String)");
+        System.out.println("--------------------");
+        System.out.println("4: Save ArrayList to file");
+        System.out.println("--------------------");
+        System.out.println("5: Load ArrayList from file");
+        System.out.println("--------------------");
+        System.out.println("6: Back to main menu");
+        System.out.println("--------------------");
+    }
+
+    private static void addToArrayList() {
+        String input = getInputForArrayList();
+        arrayList.add(input);
+        System.out.println("Added '" + input + "' to the ArrayList.");
+    }
+
+    private static String getInputForArrayList() {
+        String input = "";
+        while (!isValidWord(input)) {
+            System.out.print("Add to ArrayList: ");
+            input = main.input.nextLine();
+        }
+        return input;
+    }
+
+    private static void viewArrayList() {
+        if (arrayList.isEmpty()) {
+            System.out.println("ArrayList is empty.");
+        } else {
+            for (int i = 0; i < arrayList.size(); i++) {
+                System.out.println(i + ": " + arrayList.get(i));
+            }
+        }
+    }
+
+    private static void deleteFromArrayList() {
+        if (arrayList.isEmpty()) {
+            System.out.println("ArrayList is empty.");
+        } else {
+            int index = getIndexInputForArrayList();
+            System.out.println(arrayList.get(index) + " has been removed from the ArrayList.");
+            arrayList.remove(index);
+        }
+    }
+
+    private static int getIndexInputForArrayList() {
+        System.out.println("--------------------------------------------------");
+        viewArrayList();
+        int index = -1;
+        boolean validIndex = false;
+        while (!validIndex) {
+            System.out.print("Select the index of the item you want to remove: ");
+            try {
+                index = main.input.nextInt();
+                main.input.nextLine();
+                if (index >= 0 && index < arrayList.size()) {
+                    validIndex = true;
+                } else {
+                    System.out.println("Invalid index. Please enter a valid index.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid index.");
+                main.input.next();
+            }
+        }
+        return index;
+    }
+
+    // Array
     private static void arrayMenu() {
         int num = -1;
         while (num < 0) {
@@ -179,7 +295,6 @@ public class main {
         System.out.println("--------------------");
     }
 
-    // Array
     private static void saveArrayToCSVFile() throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(arrayCSVFile))) {
             for (String element : array) {
@@ -270,8 +385,6 @@ public class main {
         }
         return index;
     }
-
-
 
     private static void viewArray() {
         for (int i = 0; i < array.length; i++) {
