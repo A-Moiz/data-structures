@@ -1,3 +1,6 @@
+package src;
+
+import java.io.*;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -6,6 +9,8 @@ public class main {
     static Scanner input = new Scanner(System.in);
 
     // Array
+    private static String arrayCSVFile = "array_content.csv";
+    private static String arrayTextFile = "array_content.txt";
     static int arrayLength = 10;
     static String[] array = new String[arrayLength];
 
@@ -64,6 +69,11 @@ public class main {
                     case 3:
                         deleteFromArray();
                         break;
+                    case 4:
+                        saveArrayMenu();
+                        break;
+                    case 5:
+                        loadArrayMenu();
                     case 6:
                         num = 0;
                         break;
@@ -71,6 +81,58 @@ public class main {
             } catch (NumberFormatException e) {
                 System.out.println("Invalid option entered");
                 num = -1;
+            }
+        }
+    }
+
+    private static void saveArrayMenu() {
+        int num = -1;
+        while (num < 0) {
+            saveArrayOptions();
+            try {
+                int choice = Integer.valueOf(input.nextLine());
+                switch (choice) {
+                    case 1:
+                        saveArrayToCSVFile();
+                        break;
+                    case 2:
+                        saveArrayToTextFile();
+                        break;
+                    case 3:
+                        num = 0;
+                        break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid option entered");
+                num = -1;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private static void loadArrayMenu() {
+        int num = -1;
+        while (num < 0) {
+            loadArrayOptions();
+            try {
+                int choice = Integer.valueOf(input.nextLine());
+                switch (choice) {
+                    case 1:
+                        loadArrayFromCSVFile();
+                        break;
+                    case 2:
+                        loadArrayFromTextFile();
+                        break;
+                    case 3:
+                        num = 0;
+                        break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid option entered");
+                num = -1;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }
@@ -85,15 +147,97 @@ public class main {
         System.out.println("--------------------");
         System.out.println("3: Delete from array (String)");
         System.out.println("--------------------");
-        System.out.println("4: Save array to file (String)");
+        System.out.println("4: Save array to file");
         System.out.println("--------------------");
-        System.out.println("5: Load array from file (String)");
+        System.out.println("5: Load array from file");
         System.out.println("--------------------");
         System.out.println("6: Back to main menu");
         System.out.println("--------------------");
     }
 
+    private static void saveArrayOptions() {
+        System.out.println("--------------------------------------------------");
+        System.out.println("Please choose one of the following options:");
+        System.out.println("--------------------");
+        System.out.println("1: Save array to CSV");
+        System.out.println("--------------------");
+        System.out.println("2: Save array to Text file");
+        System.out.println("--------------------");
+        System.out.println("3: Go back");
+        System.out.println("--------------------");
+    }
+
+    private static void loadArrayOptions() {
+        System.out.println("--------------------------------------------------");
+        System.out.println("Please choose one of the following options:");
+        System.out.println("--------------------");
+        System.out.println("1: Load data from CSV file");
+        System.out.println("--------------------");
+        System.out.println("2: Load data from text file");
+        System.out.println("--------------------");
+        System.out.println("3: Go back");
+        System.out.println("--------------------");
+    }
+
     // Array
+    private static void saveArrayToCSVFile() throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(arrayCSVFile))) {
+            for (String element : array) {
+                if (element != null) {
+                    writer.write(element);
+                    writer.newLine();
+                }
+            }
+            System.out.println("Array content saved to file: " + arrayCSVFile);
+        } catch (IOException e) {
+            System.out.println("Error occurred while saving array to file: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    private static void loadArrayFromCSVFile() throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(arrayCSVFile))) {
+            String line;
+            int index = 0;
+            while ((line = reader.readLine()) != null) {
+                array[index++] = line;
+            }
+            System.out.println("Array content loaded from file: " + arrayCSVFile);
+        } catch (IOException e) {
+            System.out.println("Error occurred while loading array from file: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    private static void saveArrayToTextFile() throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(arrayTextFile))) {
+            for (String element : array) {
+                if (element != null) {
+                    writer.write(element);
+                    writer.newLine();
+                }
+            }
+            System.out.println("Array content saved to file: " + arrayTextFile);
+        } catch (IOException e) {
+            System.out.println("Error occurred while saving array to file: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    private static void loadArrayFromTextFile() throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(arrayTextFile))) {
+            String line;
+            int index = 0;
+            while ((line = reader.readLine()) != null) {
+                array[index++] = line;
+            }
+            System.out.println("Array content loaded from file: " + arrayTextFile);
+        } catch (IOException e) {
+            System.out.println("Error occurred while loading array from file: " + e.getMessage());
+            throw e;
+        }
+    }
+
     private static void deleteFromArray() {
         int index = getIndexInput();
         if (array[index] != null) {
