@@ -77,6 +77,12 @@ public class main {
                     case 3:
                         deleteFromArrayList();
                         break;
+                    case 4:
+                        saveArrayListMenu();
+                        break;
+                    case 5:
+                        loadArrayListMenu();
+                        break;
                     case 6:
                         num = 0;
                         break;
@@ -162,6 +168,140 @@ public class main {
             }
         }
         return index;
+    }
+
+    private static void saveArrayListOptions() {
+        System.out.println("--------------------------------------------------");
+        System.out.println("Please choose one of the following options:");
+        System.out.println("--------------------");
+        System.out.println("1: Save ArrayList to CSV");
+        System.out.println("--------------------");
+        System.out.println("2: Save ArrayList to Text file");
+        System.out.println("--------------------");
+        System.out.println("3: Go back");
+        System.out.println("--------------------");
+    }
+
+    private static void saveArrayListMenu() {
+        int num = -1;
+        while (num < 0) {
+            saveArrayListOptions();
+            try {
+                int choice = Integer.valueOf(input.nextLine());
+                switch (choice) {
+                    case 1:
+                        saveArrayListToCSVFile();
+                        break;
+                    case 2:
+                        saveArrayListToTextFile();
+                        break;
+                    case 3:
+                        num = 0;
+                        break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid option entered");
+                num = -1;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private static void saveArrayListToCSVFile() throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(arrayListCSVFile))) {
+            for (String element : arrayList) {
+                if (element != null) {
+                    writer.write(element);
+                    writer.newLine();
+                }
+            }
+            System.out.println("ArrayList content saved to file: " + arrayListCSVFile);
+        } catch (IOException e) {
+            System.out.println("Error occurred while saving ArrayList to file: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    private static void saveArrayListToTextFile() throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(arrayListTextFile))) {
+            for (String element : arrayList) {
+                if (element != null) {
+                    writer.write(element);
+                    writer.newLine();
+                }
+            }
+            System.out.println("ArrayList content saved to file: " + arrayListTextFile);
+        } catch (IOException e) {
+            System.out.println("Error occurred while saving array to file: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    private static void loadArrayListOptions() {
+        System.out.println("--------------------------------------------------");
+        System.out.println("Please choose one of the following options:");
+        System.out.println("--------------------");
+        System.out.println("1: Load data from CSV file");
+        System.out.println("--------------------");
+        System.out.println("2: Load data from text file");
+        System.out.println("--------------------");
+        System.out.println("3: Go back");
+        System.out.println("--------------------");
+    }
+
+    private static void loadArrayListMenu() {
+        int num = -1;
+        while (num < 0) {
+            loadArrayListOptions();
+            try {
+                int choice = Integer.valueOf(input.nextLine());
+                switch (choice) {
+                    case 1:
+                        loadArrayListFromCSVFile();
+                        break;
+                    case 2:
+                        loadArrayListFromTextFile();
+                        break;
+                    case 3:
+                        num = 0;
+                        break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid option entered");
+                num = -1;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private static void loadArrayListFromCSVFile() throws IOException {
+        arrayList.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(arrayListCSVFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                arrayList.add(line);
+            }
+            System.out.println("ArrayList content loaded from file: " + arrayListCSVFile);
+        } catch (IOException e) {
+            System.out.println("Error occurred while loading ArrayList from file: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    private static void loadArrayListFromTextFile() throws IOException {
+        arrayList.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(arrayListTextFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                arrayList.add(line);
+            }
+            System.out.println("ArrayList content loaded from file: " + arrayTextFile);
+        } catch (IOException e) {
+            System.out.println("Error occurred while loading ArrayList from file: " + e.getMessage());
+            throw e;
+        }
     }
 
     // Array
