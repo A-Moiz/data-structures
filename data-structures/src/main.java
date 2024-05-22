@@ -1,24 +1,16 @@
 package src;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class main {
     static Scanner input = new Scanner(System.in);
 
     // Array
-    private static String arrayCSVFile = "array_content.csv";
-    private static String arrayTextFile = "array_content.txt";
-    static int arrayLength = 10;
-    static String[] array = new String[arrayLength];
+    static Array arrayObject = new Array();
 
     // Array list
-    private static String arrayListCSVFile = "arrayList_content.csv";
-    private static  String arrayListTextFile = "arrayList_content.txt";
-    static ArrayList<String> arrayList = new ArrayList<>();
+    static ArrayListManager arrayListObject = new ArrayListManager();
 
     public static void main(String[] args) {
         mainMenu();
@@ -69,13 +61,13 @@ public class main {
                 int choice = Integer.valueOf(input.nextLine());
                 switch (choice) {
                     case 1:
-                        addToArrayList();
+                        arrayListObject.addToArrayList();
                         break;
                     case 2:
-                        viewArrayList();
+                        arrayListObject.viewArrayList();
                         break;
                     case 3:
-                        deleteFromArrayList();
+                        arrayListObject.deleteFromArrayList();
                         break;
                     case 4:
                         saveArrayListMenu();
@@ -112,64 +104,6 @@ public class main {
         System.out.println("--------------------");
     }
 
-    private static void addToArrayList() {
-        String input = getInputForArrayList();
-        arrayList.add(input);
-        System.out.println("Added '" + input + "' to the ArrayList.");
-    }
-
-    private static String getInputForArrayList() {
-        String input = "";
-        while (!isValidWord(input)) {
-            System.out.print("Add to ArrayList: ");
-            input = main.input.nextLine();
-        }
-        return input;
-    }
-
-    private static void viewArrayList() {
-        if (arrayList.isEmpty()) {
-            System.out.println("ArrayList is empty.");
-        } else {
-            for (int i = 0; i < arrayList.size(); i++) {
-                System.out.println(i + ": " + arrayList.get(i));
-            }
-        }
-    }
-
-    private static void deleteFromArrayList() {
-        if (arrayList.isEmpty()) {
-            System.out.println("ArrayList is empty.");
-        } else {
-            int index = getIndexInputForArrayList();
-            System.out.println(arrayList.get(index) + " has been removed from the ArrayList.");
-            arrayList.remove(index);
-        }
-    }
-
-    private static int getIndexInputForArrayList() {
-        System.out.println("--------------------------------------------------");
-        viewArrayList();
-        int index = -1;
-        boolean validIndex = false;
-        while (!validIndex) {
-            System.out.print("Select the index of the item you want to remove: ");
-            try {
-                index = main.input.nextInt();
-                main.input.nextLine();
-                if (index >= 0 && index < arrayList.size()) {
-                    validIndex = true;
-                } else {
-                    System.out.println("Invalid index. Please enter a valid index.");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a valid index.");
-                main.input.next();
-            }
-        }
-        return index;
-    }
-
     private static void saveArrayListOptions() {
         System.out.println("--------------------------------------------------");
         System.out.println("Please choose one of the following options:");
@@ -190,10 +124,10 @@ public class main {
                 int choice = Integer.valueOf(input.nextLine());
                 switch (choice) {
                     case 1:
-                        saveArrayListToCSVFile();
+                        arrayListObject.saveArrayListToCSVFile();
                         break;
                     case 2:
-                        saveArrayListToTextFile();
+                        arrayListObject.saveArrayListToTextFile();
                         break;
                     case 3:
                         num = 0;
@@ -205,36 +139,6 @@ public class main {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }
-    }
-
-    private static void saveArrayListToCSVFile() throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(arrayListCSVFile))) {
-            for (String element : arrayList) {
-                if (element != null) {
-                    writer.write(element);
-                    writer.newLine();
-                }
-            }
-            System.out.println("ArrayList content saved to file: " + arrayListCSVFile);
-        } catch (IOException e) {
-            System.out.println("Error occurred while saving ArrayList to file: " + e.getMessage());
-            throw e;
-        }
-    }
-
-    private static void saveArrayListToTextFile() throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(arrayListTextFile))) {
-            for (String element : arrayList) {
-                if (element != null) {
-                    writer.write(element);
-                    writer.newLine();
-                }
-            }
-            System.out.println("ArrayList content saved to file: " + arrayListTextFile);
-        } catch (IOException e) {
-            System.out.println("Error occurred while saving array to file: " + e.getMessage());
-            throw e;
         }
     }
 
@@ -258,10 +162,10 @@ public class main {
                 int choice = Integer.valueOf(input.nextLine());
                 switch (choice) {
                     case 1:
-                        loadArrayListFromCSVFile();
+                        arrayListObject.loadArrayListFromCSVFile();
                         break;
                     case 2:
-                        loadArrayListFromTextFile();
+                        arrayListObject.loadArrayListFromTextFile();
                         break;
                     case 3:
                         num = 0;
@@ -276,34 +180,6 @@ public class main {
         }
     }
 
-    private static void loadArrayListFromCSVFile() throws IOException {
-        arrayList.clear();
-        try (BufferedReader reader = new BufferedReader(new FileReader(arrayListCSVFile))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                arrayList.add(line);
-            }
-            System.out.println("ArrayList content loaded from file: " + arrayListCSVFile);
-        } catch (IOException e) {
-            System.out.println("Error occurred while loading ArrayList from file: " + e.getMessage());
-            throw e;
-        }
-    }
-
-    private static void loadArrayListFromTextFile() throws IOException {
-        arrayList.clear();
-        try (BufferedReader reader = new BufferedReader(new FileReader(arrayListTextFile))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                arrayList.add(line);
-            }
-            System.out.println("ArrayList content loaded from file: " + arrayTextFile);
-        } catch (IOException e) {
-            System.out.println("Error occurred while loading ArrayList from file: " + e.getMessage());
-            throw e;
-        }
-    }
-
     // Array
     private static void arrayMenu() {
         int num = -1;
@@ -313,17 +189,13 @@ public class main {
                 int choice = Integer.valueOf(input.nextLine());
                 switch (choice) {
                     case 1:
-                        if (array[array.length - 1] != null) {
-                            System.out.println("Array is full right now, remove an item before adding something new.");
-                        } else {
-                            addToArray();
-                        }
+                        arrayObject.checkArray();
                         break;
                     case 2:
-                        viewArray();
+                        arrayObject.viewArray();
                         break;
                     case 3:
-                        deleteFromArray();
+                        arrayObject.deleteFromArray();
                         break;
                     case 4:
                         saveArrayMenu();
@@ -349,10 +221,10 @@ public class main {
                 int choice = Integer.valueOf(input.nextLine());
                 switch (choice) {
                     case 1:
-                        saveArrayToCSVFile();
+                        arrayObject.saveArrayToCSVFile();
                         break;
                     case 2:
-                        saveArrayToTextFile();
+                        arrayObject.saveArrayToTextFile();
                         break;
                     case 3:
                         num = 0;
@@ -375,10 +247,10 @@ public class main {
                 int choice = Integer.valueOf(input.nextLine());
                 switch (choice) {
                     case 1:
-                        loadArrayFromCSVFile();
+                        arrayObject.loadArrayFromCSVFile();
                         break;
                     case 2:
-                        loadArrayFromTextFile();
+                        arrayObject.loadArrayFromTextFile();
                         break;
                     case 3:
                         num = 0;
@@ -433,130 +305,5 @@ public class main {
         System.out.println("--------------------");
         System.out.println("3: Go back");
         System.out.println("--------------------");
-    }
-
-    private static void saveArrayToCSVFile() throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(arrayCSVFile))) {
-            for (String element : array) {
-                if (element != null) {
-                    writer.write(element);
-                    writer.newLine();
-                }
-            }
-            System.out.println("Array content saved to file: " + arrayCSVFile);
-        } catch (IOException e) {
-            System.out.println("Error occurred while saving array to file: " + e.getMessage());
-            throw e;
-        }
-    }
-
-    private static void loadArrayFromCSVFile() throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(arrayCSVFile))) {
-            String line;
-            int index = 0;
-            while ((line = reader.readLine()) != null) {
-                array[index++] = line;
-            }
-            System.out.println("Array content loaded from file: " + arrayCSVFile);
-        } catch (IOException e) {
-            System.out.println("Error occurred while loading array from file: " + e.getMessage());
-            throw e;
-        }
-    }
-
-    private static void saveArrayToTextFile() throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(arrayTextFile))) {
-            for (String element : array) {
-                if (element != null) {
-                    writer.write(element);
-                    writer.newLine();
-                }
-            }
-            System.out.println("Array content saved to file: " + arrayTextFile);
-        } catch (IOException e) {
-            System.out.println("Error occurred while saving array to file: " + e.getMessage());
-            throw e;
-        }
-    }
-
-    private static void loadArrayFromTextFile() throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(arrayTextFile))) {
-            String line;
-            int index = 0;
-            while ((line = reader.readLine()) != null) {
-                array[index++] = line;
-            }
-            System.out.println("Array content loaded from file: " + arrayTextFile);
-        } catch (IOException e) {
-            System.out.println("Error occurred while loading array from file: " + e.getMessage());
-            throw e;
-        }
-    }
-
-    private static void deleteFromArray() {
-        int index = getIndexInput();
-        if (array[index] != null) {
-            System.out.println(array[index] + " has been removed from the Array.");
-            array[index] = null;
-        } else {
-            System.out.println("The index selected is already null.");
-        }
-    }
-
-    private static int getIndexInput() {
-        System.out.println("--------------------------------------------------");
-        viewArray();
-        int index = -1;
-        boolean validIndex = false;
-        while (!validIndex) {
-            System.out.print("Select the index of the item you want to remove: ");
-            try {
-                index = main.input.nextInt();
-                main.input.nextLine();
-                if (index >= 0 && index < array.length) {
-                    validIndex = true;
-                } else {
-                    System.out.println("Invalid index. Please enter a valid index.");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a valid index.");
-                main.input.next();
-            }
-        }
-        return index;
-    }
-
-    private static void viewArray() {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == null) {
-                System.out.println(i + ": " + "Empty");
-            } else {
-                System.out.println(i + ": " + array[i]);
-            }
-        }
-    }
-
-    private static void addToArray() {
-        String input = getInputForArray();
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == null) {
-                array[i] = input;
-                System.out.println("Added '" + input + "' to the array.");
-                break;
-            }
-        }
-    }
-
-    private static String getInputForArray() {
-        String input = "";
-        while (!isValidWord(input)) {
-            System.out.print("Add to Array: ");
-            input = main.input.nextLine();
-        }
-        return input;
-    }
-
-    private static boolean isValidWord(String input) {
-        return Pattern.matches("[a-zA-Z]+", input);
     }
 }
