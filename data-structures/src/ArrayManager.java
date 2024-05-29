@@ -4,13 +4,13 @@ import java.io.*;
 import java.util.InputMismatchException;
 import java.util.regex.Pattern;
 
-public class Array {
+public class ArrayManager {
     private static int arrayLength = 10;
     private static String[] array = new String[arrayLength];
     private static String arrayCSVFile = "array_content.csv";
     private static String arrayTextFile = "array_content.txt";
 
-    public Array() {
+    public ArrayManager() {
     }
 
     public int getArrayLength() {
@@ -22,7 +22,7 @@ public class Array {
     }
 
     public void setArray(String[] array) {
-        Array.array = array;
+        ArrayManager.array = array;
     }
 
     public String getArrayCSVFile() {
