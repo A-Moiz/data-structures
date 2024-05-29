@@ -1,5 +1,6 @@
 package src;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.LinkedList;
@@ -11,6 +12,8 @@ public class QueueManager {
     private static int queueLength = 10;
     static Queue<String> queue = new LinkedList<>();
     static ArrayList<String> waitingList = new ArrayList<>();
+    private static String queueCSVFile = "queue_content.csv";
+    private static String queueTextFile = "queue_content.txt";
 
     public static int getQueueLength() {
         return queueLength;
@@ -129,11 +132,102 @@ public class QueueManager {
         }
     }
 
+    public int getIndexInputForWaitingList() {
+        System.out.println("--------------------------------------------------");
+        viewQueue();
+        int index = -1;
+        boolean validIndex = false;
+        while (!validIndex) {
+            System.out.print("Select the index of the item you want to remove: ");
+            try {
+                index = main.input.nextInt();
+                main.input.nextLine();
+                if (index >= 0 && index < waitingList.size()) {
+                    validIndex = true;
+                } else {
+                    System.out.println("Invalid index. Please enter a valid index.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid index.");
+                main.input.next();
+            }
+        }
+        return index;
+    }
+
+    public void removeFromWaitingList() {
+        if (waitingList.isEmpty()) {
+            System.out.println("Waiting list is empty.");
+        } else {
+            int index = getIndexInputForWaitingList();
+            System.out.println(waitingList.get(index) + " has been removed from the waiting list.");
+            waitingList.remove(index);
+        }
+    }
+
     public void waitingListToQueue() {
         String element = "";
         element = waitingList.get(0);
         waitingList.remove(0);
         queue.add(element);
         System.out.println(element + " has been removed from the waiting list and added to the Queue.");
+    }
+
+    public void saveQueueToCSVFile() throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(queueCSVFile))) {
+            for (String element : queue) {
+                if (element != null) {
+                    writer.write(element);
+                    writer.newLine();
+                }
+            }
+            System.out.println("Queue content saved to file: " + queueCSVFile);
+        } catch (IOException e) {
+            System.out.println("Error occurred while saving queue to file: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    public void saveQueueToTextFile() throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(queueTextFile))) {
+            for (String element : queue) {
+                if (element != null) {
+                    writer.write(element);
+                    writer.newLine();
+                }
+            }
+            System.out.println("Queue content saved to file: " + queueTextFile);
+        } catch (IOException e) {
+            System.out.println("Error occurred while saving queue to file: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    public void loadQueueFromCSVFile() throws IOException {
+        queue.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(queueCSVFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                queue.add(line);
+            }
+            System.out.println("Queue loaded from file: " + queueCSVFile);
+        } catch (IOException e) {
+            System.out.println("Error occurred while loading Queue from file: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    public void loadQueueFromTextFile() throws IOException {
+        queue.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(queueTextFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                queue.add(line);
+            }
+            System.out.println("Queue loaded from file: " + queueTextFile);
+        } catch (IOException e) {
+            System.out.println("Error occurred while loading Queue from file: " + e.getMessage());
+            throw e;
+        }
     }
 }

@@ -70,15 +70,15 @@ public class main {
                     case 4:
                         queueObject.removeFromQueue();
                         break;
-//                    case 5:
-//                        queueObject.removeFromWaitingList();
-//                        break;
-//                    case 6:
-//                        queueObject.saveQueue();
-//                        break;
-//                    case 7:
-//                        queueObject.loadQueue();
-//                        break;
+                    case 5:
+                        queueObject.removeFromWaitingList();
+                        break;
+                    case 6:
+                        saveQueueMenu();
+                        break;
+                    case 7:
+                        loadQueueMenu();
+                        break;
                     case 8:
                         num = 0;
                         break;
@@ -86,6 +86,58 @@ public class main {
             } catch (NumberFormatException e) {
                 System.out.println("Invalid option entered");
                 num = -1;
+            }
+        }
+    }
+
+    private static void saveQueueMenu() {
+        int num = -1;
+        while (num < 0) {
+            options.saveQueueOptions();
+            try {
+                int choice = Integer.valueOf(input.nextLine());
+                switch (choice) {
+                    case 1:
+                        queueObject.saveQueueToCSVFile();
+                        break;
+                    case 2:
+                        queueObject.saveQueueToTextFile();
+                        break;
+                    case 3:
+                        num = 0;
+                        break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid option entered");
+                num = -1;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private static void loadQueueMenu() {
+        int num = -1;
+        while (num < 0) {
+            options.loadQueueOptions();
+            try {
+                int choice = Integer.valueOf(input.nextLine());
+                switch (choice) {
+                    case 1:
+                        queueObject.loadQueueFromCSVFile();
+                        break;
+                    case 2:
+                        queueObject.loadQueueFromTextFile();
+                        break;
+                    case 3:
+                        num = 0;
+                        break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid option entered");
+                num = -1;
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }
@@ -213,7 +265,6 @@ public class main {
         int num = -1;
         while (num < 0) {
             options.saveArrayOptions();
-            //saveArrayOptions();
             try {
                 int choice = Integer.valueOf(input.nextLine());
                 switch (choice) {
@@ -240,7 +291,6 @@ public class main {
         int num = -1;
         while (num < 0) {
             options.loadArrayOptions();
-            //loadArrayOptions();
             try {
                 int choice = Integer.valueOf(input.nextLine());
                 switch (choice) {

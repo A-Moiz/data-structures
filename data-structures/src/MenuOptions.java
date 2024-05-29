@@ -74,6 +74,30 @@ public class MenuOptions {
         System.out.println("--------------------");
     }
 
+    public void saveQueueOptions() {
+        System.out.println("--------------------------------------------------");
+        System.out.println("Please choose one of the following options:");
+        System.out.println("--------------------");
+        System.out.println("1: Save Queue to CSV");
+        System.out.println("--------------------");
+        System.out.println("2: Save Queue to Text file");
+        System.out.println("--------------------");
+        System.out.println("3: Go back");
+        System.out.println("--------------------");
+    }
+
+    public void loadQueueOptions() {
+        System.out.println("--------------------------------------------------");
+        System.out.println("Please choose one of the following options:");
+        System.out.println("--------------------");
+        System.out.println("1: Load queue from CSV file");
+        System.out.println("--------------------");
+        System.out.println("2: Load queue from text file");
+        System.out.println("--------------------");
+        System.out.println("3: Go back");
+        System.out.println("--------------------");
+    }
+
     public void saveArrayListOptions() {
         System.out.println("--------------------------------------------------");
         System.out.println("Please choose one of the following options:");
