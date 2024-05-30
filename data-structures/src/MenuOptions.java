@@ -56,43 +56,43 @@ public class MenuOptions {
         System.out.println("--------------------------------------------------");
         System.out.println("Please choose one of the following options:");
         System.out.println("--------------------");
-        System.out.println("1: Add to Queue (String)");
+        System.out.println("1: Add to List (String)");
         System.out.println("--------------------");
-        System.out.println("2: View Queue");
+        System.out.println("2: View List");
         System.out.println("--------------------");
-        System.out.println("3: View Waiting list");
+        System.out.println("3: View queue");
         System.out.println("--------------------");
-        System.out.println("4: Remove from Queue");
+        System.out.println("4: Remove from List");
         System.out.println("--------------------");
-        System.out.println("5: Remove from Waiting list");
+        System.out.println("5: Remove from Queue");
         System.out.println("--------------------");
-        System.out.println("6: Save Queue to file");
+        System.out.println("6: Save list to file");
         System.out.println("--------------------");
-        System.out.println("7: Load Queue from file");
+        System.out.println("7: Load list from file");
         System.out.println("--------------------");
         System.out.println("8: Back to main menu");
         System.out.println("--------------------");
     }
 
-    public void saveQueueOptions() {
+    public void saveListOptions() {
         System.out.println("--------------------------------------------------");
         System.out.println("Please choose one of the following options:");
         System.out.println("--------------------");
-        System.out.println("1: Save Queue to CSV");
+        System.out.println("1: Save List to CSV");
         System.out.println("--------------------");
-        System.out.println("2: Save Queue to Text file");
+        System.out.println("2: Save List to Text file");
         System.out.println("--------------------");
         System.out.println("3: Go back");
         System.out.println("--------------------");
     }
 
-    public void loadQueueOptions() {
+    public void loadListOptions() {
         System.out.println("--------------------------------------------------");
         System.out.println("Please choose one of the following options:");
         System.out.println("--------------------");
-        System.out.println("1: Load queue from CSV file");
+        System.out.println("1: Load list from CSV file");
         System.out.println("--------------------");
-        System.out.println("2: Load queue from text file");
+        System.out.println("2: Load list from text file");
         System.out.println("--------------------");
         System.out.println("3: Go back");
         System.out.println("--------------------");

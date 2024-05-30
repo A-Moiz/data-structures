@@ -62,22 +62,22 @@ public class main {
                         queueObject.addToQueue();
                         break;
                     case 2:
-                        queueObject.viewQueue();
+                        queueObject.viewList();
                         break;
                     case 3:
-                        queueObject.viewWaitingList();
+                        queueObject.viewQueue();
                         break;
                     case 4:
-                        queueObject.removeFromQueue();
+                        queueObject.removeItem();
                         break;
                     case 5:
-                        queueObject.removeFromWaitingList();
+                        queueObject.removeFromQueue();
                         break;
                     case 6:
-                        saveQueueMenu();
+                        saveListMenu();
                         break;
                     case 7:
-                        loadQueueMenu();
+                        loadListMenu();
                         break;
                     case 8:
                         num = 0;
@@ -90,18 +90,18 @@ public class main {
         }
     }
 
-    private static void saveQueueMenu() {
+    private static void saveListMenu() {
         int num = -1;
         while (num < 0) {
-            options.saveQueueOptions();
+            options.saveListOptions();
             try {
                 int choice = Integer.valueOf(input.nextLine());
                 switch (choice) {
                     case 1:
-                        queueObject.saveQueueToCSVFile();
+                        queueObject.saveListToCSVFile();
                         break;
                     case 2:
-                        queueObject.saveQueueToTextFile();
+                        queueObject.saveListToTextFile();
                         break;
                     case 3:
                         num = 0;
@@ -116,18 +116,18 @@ public class main {
         }
     }
 
-    private static void loadQueueMenu() {
+    private static void loadListMenu() {
         int num = -1;
         while (num < 0) {
-            options.loadQueueOptions();
+            options.loadListOptions();
             try {
                 int choice = Integer.valueOf(input.nextLine());
                 switch (choice) {
                     case 1:
-                        queueObject.loadQueueFromCSVFile();
+                        queueObject.loadListFromCSVFile();
                         break;
                     case 2:
-                        queueObject.loadQueueFromTextFile();
+                        queueObject.loadListFromTextFile();
                         break;
                     case 3:
                         num = 0;

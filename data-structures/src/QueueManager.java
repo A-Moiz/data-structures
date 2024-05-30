@@ -9,18 +9,18 @@ import java.util.regex.Pattern;
 
 public class QueueManager {
 
-    private static int queueLength = 10;
+    private static int listLength = 10;
     static Queue<String> queue = new LinkedList<>();
-    static ArrayList<String> waitingList = new ArrayList<>();
-    private static String queueCSVFile = "queue_content.csv";
-    private static String queueTextFile = "queue_content.txt";
+    static ArrayList<String> list = new ArrayList<>();
+    private static String listCSVFile = "list_content.csv";
+    private static String listTextFile = "list_content.txt";
 
-    public static int getQueueLength() {
-        return queueLength;
+    public static int getListLength() {
+        return listLength;
     }
 
-    public static void setQueueLength(int queueLength) {
-        QueueManager.queueLength = queueLength;
+    public static void setListLength(int listLength) {
+        QueueManager.listLength = listLength;
     }
 
     public static Queue<String> getQueue() {
@@ -31,12 +31,12 @@ public class QueueManager {
         QueueManager.queue = queue;
     }
 
-    public static ArrayList<String> getWaitingList() {
-        return waitingList;
+    public static ArrayList<String> getList() {
+        return list;
     }
 
-    public static void setWaitingList(ArrayList<String> waitingList) {
-        QueueManager.waitingList = waitingList;
+    public static void setList(ArrayList<String> waitingList) {
+        QueueManager.list = list;
     }
 
     public boolean isValidWord(String input) {
@@ -44,20 +44,20 @@ public class QueueManager {
     }
 
     public void addToQueue() {
-        String input = getInputForQueue();
-        if (queue.size() < queueLength) {
-            queue.add(input);
-            System.out.println("Added '" + input + "' to the queue.");
+        String input = getInputForList();
+        if (list.size() < listLength) {
+            list.add(input);
+            System.out.println("Added '" + input + "' to the list.");
         } else {
-            waitingList.add(input);
-            System.out.println("Queue is full, '" + input + "' has been added to the waiting list.");
+            queue.add(input);
+            System.out.println("List is full, '" + input + "' has been added to the queue.");
         }
     }
 
-    public String getInputForQueue() {
+    public String getInputForList() {
         String input = "";
         while (!isValidWord(input)) {
-            System.out.print("Add to Queue: ");
+            System.out.print("Add to List: ");
             input = main.input.nextLine();
         }
         return input;
@@ -75,19 +75,66 @@ public class QueueManager {
         }
     }
 
-    public void viewWaitingList() {
-        if (waitingList.isEmpty()) {
-            System.out.println("Waiting list is empty.");
+    public void viewList() {
+        if (list.isEmpty()) {
+            System.out.println("List is empty.");
         } else {
             int index = 0;
-            for (String item : waitingList) {
+            for (String item : list) {
                 System.out.println(index + ": " + item);
                 index++;
             }
         }
     }
 
-    public int getIndexInputForQueue() {
+    public int getIndex() {
+        System.out.println("--------------------------------------------------");
+        viewList();
+        int index = -1;
+        boolean validIndex = false;
+        while (!validIndex) {
+            System.out.print("Select the index of the item you want to remove: ");
+            try {
+                index = main.input.nextInt();
+                main.input.nextLine();
+                if (index >= 0 && index < list.size()) {
+                    validIndex = true;
+                } else {
+                    System.out.println("Invalid index. Please enter a valid index.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid index.");
+                main.input.next();
+            }
+        }
+        return index;
+    }
+
+    public void removeItem() {
+        if (list.isEmpty()) {
+            System.out.println("List is already empty.");
+        } else {
+            int index = getIndex();
+            System.out.println(list.get(index) + " has been removed from the list.");
+            list.remove(index);
+            if (!(queue.isEmpty())) {
+                queueToList();
+            }
+        }
+    }
+
+    public void queueToList() {
+        String element = "";
+        for (String item : queue) {
+            element = item;
+            break;
+        }
+        queue.remove(element);
+        list.add(element);
+        System.out.println(element + " has been removed from the queue and added to the List.");
+    }
+
+    public int getIndexForQueue() {
         System.out.println("--------------------------------------------------");
         viewQueue();
         int index = -1;
@@ -114,119 +161,76 @@ public class QueueManager {
         if (queue.isEmpty()) {
             System.out.println("Queue is already empty.");
         } else {
-            int index = getIndexInputForQueue();
-            int targetIndex = 0;
+            int index = getIndexForQueue();
             String element = "";
-            for (String item : queue) {
-                if (targetIndex == index) {
-                    element = item;
+            for (int i = 0; i < queue.size(); i++) {
+                for (String item : queue) {
+                    if (index == i) {
+                        element = item;
+                    }
                     break;
                 }
-                targetIndex++;
+                break;
             }
-            System.out.println(element + " has been removed from the Queue.");
             queue.remove(element);
-            if (!(waitingList.isEmpty())) {
-                waitingListToQueue();
-            }
+            System.out.println(element + " has been removed from the queue.");
         }
     }
 
-    public int getIndexInputForWaitingList() {
-        System.out.println("--------------------------------------------------");
-        viewQueue();
-        int index = -1;
-        boolean validIndex = false;
-        while (!validIndex) {
-            System.out.print("Select the index of the item you want to remove: ");
-            try {
-                index = main.input.nextInt();
-                main.input.nextLine();
-                if (index >= 0 && index < waitingList.size()) {
-                    validIndex = true;
-                } else {
-                    System.out.println("Invalid index. Please enter a valid index.");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a valid index.");
-                main.input.next();
-            }
-        }
-        return index;
-    }
-
-    public void removeFromWaitingList() {
-        if (waitingList.isEmpty()) {
-            System.out.println("Waiting list is empty.");
-        } else {
-            int index = getIndexInputForWaitingList();
-            System.out.println(waitingList.get(index) + " has been removed from the waiting list.");
-            waitingList.remove(index);
-        }
-    }
-
-    public void waitingListToQueue() {
-        String element = "";
-        element = waitingList.get(0);
-        waitingList.remove(0);
-        queue.add(element);
-        System.out.println(element + " has been removed from the waiting list and added to the Queue.");
-    }
-
-    public void saveQueueToCSVFile() throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(queueCSVFile))) {
-            for (String element : queue) {
+    public void saveListToCSVFile() throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(listCSVFile))) {
+            for (String element : list) {
                 if (element != null) {
                     writer.write(element);
                     writer.newLine();
                 }
             }
-            System.out.println("Queue content saved to file: " + queueCSVFile);
+            System.out.println("List saved to file: " + listCSVFile);
         } catch (IOException e) {
-            System.out.println("Error occurred while saving queue to file: " + e.getMessage());
+            System.out.println("Error occurred while saving list to file: " + e.getMessage());
             throw e;
         }
     }
 
-    public void saveQueueToTextFile() throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(queueTextFile))) {
-            for (String element : queue) {
+    public void saveListToTextFile() throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(listTextFile))) {
+            for (String element : list) {
                 if (element != null) {
                     writer.write(element);
                     writer.newLine();
                 }
             }
-            System.out.println("Queue content saved to file: " + queueTextFile);
+            System.out.println("List saved to file: " + listTextFile);
         } catch (IOException e) {
-            System.out.println("Error occurred while saving queue to file: " + e.getMessage());
+            System.out.println("Error occurred while saving list to file: " + e.getMessage());
             throw e;
         }
     }
 
-    public void loadQueueFromCSVFile() throws IOException {
-        queue.clear();
-        try (BufferedReader reader = new BufferedReader(new FileReader(queueCSVFile))) {
+    public void loadListFromCSVFile() throws IOException {
+        list.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(listCSVFile))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                queue.add(line);
+                list.add(line);
             }
-            System.out.println("Queue loaded from file: " + queueCSVFile);
+            System.out.println("List loaded from file: " + listCSVFile);
         } catch (IOException e) {
-            System.out.println("Error occurred while loading Queue from file: " + e.getMessage());
+            System.out.println("Error occurred while loading list from file: " + e.getMessage());
             throw e;
         }
     }
 
-    public void loadQueueFromTextFile() throws IOException {
-        queue.clear();
-        try (BufferedReader reader = new BufferedReader(new FileReader(queueTextFile))) {
+    public void loadListFromTextFile() throws IOException {
+        list.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(listTextFile))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                queue.add(line);
+                list.add(line);
             }
-            System.out.println("Queue loaded from file: " + queueTextFile);
+            System.out.println("List loaded from file: " + listTextFile);
         } catch (IOException e) {
-            System.out.println("Error occurred while loading Queue from file: " + e.getMessage());
+            System.out.println("Error occurred while loading list from file: " + e.getMessage());
             throw e;
         }
     }
