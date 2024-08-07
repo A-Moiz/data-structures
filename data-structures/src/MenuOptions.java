@@ -30,7 +30,9 @@ public class MenuOptions {
         System.out.println("--------------------");
         System.out.println("5: Load array from file");
         System.out.println("--------------------");
-        System.out.println("6: Back to main menu");
+        System.out.println("6: Sort Array");
+        System.out.println("--------------------");
+        System.out.println("7: Back to main menu");
         System.out.println("--------------------");
     }
 

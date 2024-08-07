@@ -1,6 +1,7 @@
 package src;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.regex.Pattern;
 
@@ -172,5 +173,21 @@ public class ArrayManager {
         for (int i = 0; i < array.length; i++) {
             array[i] = null;
         }
+    }
+
+    public void sortArray() {
+        String[] nonNullArray = Arrays.stream(array)
+                .filter(s -> s != null)
+                .toArray(String[]::new);
+
+        Arrays.sort(nonNullArray, String.CASE_INSENSITIVE_ORDER);
+
+        System.arraycopy(nonNullArray, 0, array, 0, nonNullArray.length);
+
+        for (int i = nonNullArray.length; i < array.length; i++) {
+            array[i] = null;
+        }
+
+        System.out.println("Array sorted alphabetically.");
     }
 }

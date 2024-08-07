@@ -250,7 +250,11 @@ public class main {
                         break;
                     case 5:
                         loadArrayMenu();
+                        break;
                     case 6:
+                        arrayObject.sortArray();
+                        break;
+                    case 7:
                         num = 0;
                         break;
                 }
